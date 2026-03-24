@@ -33,14 +33,17 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 1. 모든 변경사항(생성, 수정, 삭제)을 스테이징합니다. 
-          # 파일이 없어도 에러를 내지 않습니다.
           git add -A
           
-          # 2. 변경사항이 있는지 확인하고 있을 때만 커밋/푸시합니다.
-          if ! git diff --staged --quiet; then
+          # 변경사항이 있는지 확인
+          if [ -n "$(git status --porcelain)" ]; then
             git commit -m "Update price tracking: ${GITHUB_RUN_ID}"
+            
+            # 🌟 이 부분이 핵심입니다! 
+            # 리모트의 최신 상태를 가져와서 내 커밋을 그 뒤로 재배치합니다.
+            git pull --rebase origin main
+            
             git push
           else
-            echo "변경사항이 없어 푸시를 건너뜁니다."
+            echo "No changes to commit"
           fi
