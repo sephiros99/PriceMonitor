@@ -2,6 +2,8 @@ import os
 import json
 import time
 import random
+from datetime import datetime
+from zoneinfo import ZoneInfo
 import MuleMonitor
 import ElevenstMonitor
 from telegram_notifier import send_telegram
@@ -75,6 +77,11 @@ def load_input():
 
 
 def main():
+    seoul_now = datetime.now(ZoneInfo("Asia/Seoul"))
+    if seoul_now.hour >= 23 or seoul_now.hour < 8:
+        print(f"서울 시간 {seoul_now.strftime('%Y-%m-%d %H:%M:%S')} - 비작동 시간대(23:00~08:00)라서 종료합니다.")
+        return
+
     sleep_seconds = random.randint(1, 10)
     print(f"시작 전 랜덤 대기: {sleep_seconds}초")
     time.sleep(sleep_seconds)
