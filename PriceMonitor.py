@@ -9,6 +9,7 @@ TOKEN = os.environ.get('TELEGRAM_TOKEN')
 CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID')
 INPUT_FILE = "Input.json"
 PRICE_FILE_PREFIX = "last_price"
+ERROR_STATE_FILE = "error_notified.flag"
 
 def get_11st_price(url):
     headers = {
@@ -16,7 +17,10 @@ def get_11st_price(url):
     }
     
     try:
-        res = requests.get(url, headers=headers)
+        res = requests.get(url, headers=headers, timeout=10)
+        if res.status_code != 200:
+            return None, f"페이지 접근 실패(status_code={res.status_code})"
+
         soup = BeautifulSoup(res.text, 'html.parser')
         
         meta_tag = soup.find("meta", property="og:description")
@@ -27,16 +31,13 @@ def get_11st_price(url):
                 price_text = match.group(1).replace(",", "")
                 price = int(price_text)
                 print(price) # 59900
-                return price
-            print("정규식으로 가격을 찾지 못했습니다.")
-            return None
+                return price, None
+            return None, "정규식으로 가격 파싱 실패"
         else:
-            print("가격을 찾을 수 없습니다. HTML 구조를 다시 확인해주세요.")
-            return None
+            return None, "가격 메타 태그를 찾지 못함"
             
     except Exception as e:
-        print(f"오류 발생: {e}")
-        return None
+        return None, f"요청/파싱 중 예외 발생: {e}"
 
 def send_telegram(msg):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
@@ -50,6 +51,17 @@ def send_telegram(msg):
     except Exception as e:
         print(f"텔레그램 전송 실패: 예외 발생 - {e}")
         return False
+
+def is_error_notified():
+    return os.path.exists(ERROR_STATE_FILE)
+
+def mark_error_notified():
+    with open(ERROR_STATE_FILE, "w", encoding="utf-8") as f:
+        f.write("1")
+
+def clear_error_notified():
+    if os.path.exists(ERROR_STATE_FILE):
+        os.remove(ERROR_STATE_FILE)
 
 def load_input():
     if not os.path.exists(INPUT_FILE):
@@ -110,6 +122,33 @@ def get_price_file(name):
         safe_name = "item"
     return f"{PRICE_FILE_PREFIX}_{safe_name}.txt"
 
+def get_item_error_file(name):
+    safe_name = "".join(ch if ch.isalnum() else "_" for ch in name).strip("_")
+    if not safe_name:
+        safe_name = "item"
+    return f"item_error_notified_{safe_name}.flag"
+
+def notify_item_error_once(product_name, target_url, reason):
+    error_file = get_item_error_file(product_name)
+    if os.path.exists(error_file):
+        print(f"{product_name} 오류 알림 미전송: 이미 이전 실패에서 오류 알림을 전송했습니다.")
+        return
+
+    msg = f"{product_name} 오류: {reason}\n{target_url}"
+    sent = send_telegram(msg)
+    if sent:
+        with open(error_file, "w", encoding="utf-8") as f:
+            f.write("1")
+        print(f"{product_name} 오류 알림 전송: {reason}")
+    else:
+        print(f"{product_name} 오류 알림 전송 실패: 다음 실행에서 다시 시도합니다.")
+
+def clear_item_error_notified(product_name):
+    error_file = get_item_error_file(product_name)
+    if os.path.exists(error_file):
+        os.remove(error_file)
+        print(f"{product_name} 성공 실행 감지: 오류 알림 상태를 초기화합니다.")
+
 def process_item(item):
     target_url = item["url"]
     threshold = item["threshold"]
@@ -119,15 +158,21 @@ def process_item(item):
     print(f"\n처리 시작: {product_name}")
 
     current_price = None
+    price_error = None
     if "11st.co.kr" in target_url:
-        current_price = get_11st_price(target_url)
+        current_price, price_error = get_11st_price(target_url)
     else:
         print(f"{product_name} 알람 미전송: 11번가 URL이 아니어서 가격 조회를 건너뜁니다.")
         return
 
     if current_price is None:
-        print(f"{product_name} 알람 미전송: 현재 가격을 가져오지 못했습니다.")
+        if price_error is None:
+            price_error = "현재 가격을 가져오지 못했습니다."
+        print(f"{product_name} 알람 미전송: {price_error}")
+        notify_item_error_once(product_name, target_url, price_error)
         return
+
+    clear_item_error_notified(product_name)
 
     # 이전 가격 읽기 (없거나 읽기 실패 시 None)
     last_price = None
@@ -187,4 +232,21 @@ def main():
         process_item(item)
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+        if is_error_notified():
+            print("성공 실행 감지: 오류 알림 상태를 초기화합니다.")
+            clear_error_notified()
+    except Exception as e:
+        error_msg = f"실행 오류 발생: {e}"
+        print(error_msg)
+
+        if is_error_notified():
+            print("오류 알림 미전송: 이미 이전 실패에서 오류 알림을 전송했습니다.")
+        else:
+            sent = send_telegram(error_msg)
+            if sent:
+                print("오류 알림 전송: 텔레그램으로 오류 메시지를 보냈습니다.")
+                mark_error_notified()
+            else:
+                print("오류 알림 전송 실패: 다음 실행에서 다시 시도합니다.")
