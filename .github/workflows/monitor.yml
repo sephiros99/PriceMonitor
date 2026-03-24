@@ -32,7 +32,15 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add last_price_*.txt
-          # 변경사항이 있을 때만 커밋 (삭제된 파일도 포함되도록 git add -A 등을 고려할 수 있음)
-          git commit -m "Update price tracking files" || echo "No changes to commit"
-          git push
+          
+          # 1. 모든 변경사항(생성, 수정, 삭제)을 스테이징합니다. 
+          # 파일이 없어도 에러를 내지 않습니다.
+          git add -A
+          
+          # 2. 변경사항이 있는지 확인하고 있을 때만 커밋/푸시합니다.
+          if ! git diff --staged --quiet; then
+            git commit -m "Update price tracking: ${GITHUB_RUN_ID}"
+            git push
+          else
+            echo "변경사항이 없어 푸시를 건너뜁니다."
+          fi
