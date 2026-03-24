@@ -6,7 +6,7 @@ on:
   workflow_dispatch:       # 버튼을 눌러 수동으로 바로 실행해볼 수 있게 함
   
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
   
 jobs:
   run-bot:
