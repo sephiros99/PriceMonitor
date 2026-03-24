@@ -9,10 +9,10 @@ jobs:
   run-bot:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3  # 내 코드를 가상 서버로 가져옴
+      - uses: actions/checkout@v4     # 최신 (Node 20+ 및 Node 24 호환 가능)
       
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5 # 최신 (Node 20+ 및 Node 24 호환 가능)
         with:
           python-version: '3.13'
           
