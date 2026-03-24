@@ -1,0 +1,17 @@
+[
+  {
+    "url": "https://www.11st.co.kr/products/pa/8538440139?&trTypeCd=MAG3&trCtgrNo=585021",
+    "threshold": 60000,
+    "name": "엘릭서 OPTIWEB 9-42"
+  },
+  {
+    "url": "https://www.11st.co.kr/products/pa/8669181599?&trTypeCd=MAG3&trCtgrNo=585021",
+    "threshold": 70000,
+    "name": "엘릭서 NANOWEB 9-42"
+  },
+  {
+    "url": "https://www.11st.co.kr/products/pa/8669283762?&trTypeCd=MAG3&trCtgrNo=585021",
+    "threshold": 90000,
+    "name": "엘릭서 NANOWEB 12-53"
+  }
+]
