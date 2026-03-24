@@ -2,7 +2,7 @@ name: Price Monitor
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # 15시간마다 실행 (UTC 기준)
+    - cron: '*/15 * * * *'  # 15분마다 실행 (UTC 기준)
   workflow_dispatch:       # 버튼을 눌러 수동으로 바로 실행해볼 수 있게 함
   
 env:
