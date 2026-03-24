@@ -30,9 +30,9 @@
     "name": "112V"
   },
   {
-    "url": "https://www.mule.co.kr/bbs/market/sell?page=1&map=list&mode=list&region=&start_price=&end_price=&qf=title&qs=%EB%A0%88%EB%B8%8C%EC%8A%A4%ED%83%80&category=&ct1=%EC%9D%BC%EB%A0%89%EA%B8%B0%ED%83%80&ct2=%EC%9D%BC%EB%A0%89%EA%B8%B0%ED%83%80&ct3=&store=&options=&soldout=&sell_status=&sido=&gugun=&dong=&period=&of=wdate&od=desc&andor=and&v=l",
+    "url": "https://www.mule.co.kr/bbs/market/sell?page=1&map=list&mode=list&region=&start_price=&end_price=&qf=title&qs=rss20&category=&ct1=%EC%9D%BC%EB%A0%89%EA%B8%B0%ED%83%80&ct2=%EC%9D%BC%EB%A0%89%EA%B8%B0%ED%83%80&ct3=&store=&options=&soldout=&sell_status=&sido=&gugun=&dong=&period=&of=wdate&od=desc&andor=and&v=l",
     "threshold": 700000,
-    "name": "레브스타"
+    "name": "RSS20"
   },
   {
     "url": "https://www.mule.co.kr/bbs/market/sell?page=1&map=list&mode=list&region=&start_price=&end_price=&qf=title&qs=g300%20raw&category=&ct1=%EC%9D%BC%EB%A0%89%EA%B8%B0%ED%83%80&ct2=%EC%9D%BC%EB%A0%89%EA%B8%B0%ED%83%80&ct3=&store=&options=&soldout=&sell_status=&sido=&gugun=&dong=&period=&of=wdate&od=desc&andor=and&v=l",
