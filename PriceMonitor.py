@@ -1,5 +1,7 @@
 import os
 import json
+import time
+import random
 import MuleMonitor
 import ElevenstMonitor
 from telegram_notifier import send_telegram
@@ -73,6 +75,10 @@ def load_input():
 
 
 def main():
+    sleep_seconds = random.randint(1, 10)
+    print(f"시작 전 랜덤 대기: {sleep_seconds}초")
+    time.sleep(sleep_seconds)
+
     input_items = load_input()
     if input_items is None:
         return
