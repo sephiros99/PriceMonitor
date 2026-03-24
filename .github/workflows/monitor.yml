@@ -1,0 +1,33 @@
+name: Price Monitor
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'  # 3시간마다 실행 (UTC 기준)
+  workflow_dispatch:       # 버튼을 눌러 수동으로 바로 실행해볼 수 있게 함
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3  # 내 코드를 가상 서버로 가져옴
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+          
+      - name: Install dependencies
+        run: pip install requests beautifulsoup4
+        
+      - name: Run script
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python monitor.py  # 내 파이썬 파일 실행
+        
+      - name: Auto Commit  # 가격 정보 업데이트를 위해 다시 깃허브에 저장
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add last_price.txt
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update last price" && git push)
