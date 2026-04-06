@@ -219,6 +219,11 @@ def load_input():
     return items
 
 def process_item(item, alert_state, telegram_sender):
+    
+    sleep_seconds = random.randint(5, 10)
+    print(f"ITEM 시작 전 랜덤 대기: {sleep_seconds}초")
+    time.sleep(sleep_seconds)
+    
     item_name = item["name"]
     url = item["url"]
     threshold = item["threshold"]
