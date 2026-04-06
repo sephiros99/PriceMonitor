@@ -220,7 +220,7 @@ def load_input():
 
 def process_item(item, alert_state, telegram_sender):
     
-    sleep_seconds = random.randint(5, 10)
+    sleep_seconds = random.randint(30, 60)
     print(f"ITEM 시작 전 랜덤 대기: {sleep_seconds}초")
     time.sleep(sleep_seconds)
     
