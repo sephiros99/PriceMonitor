@@ -5,6 +5,7 @@ import re  # 정규표현식 추가
 from decimal import Decimal, InvalidOperation
 import os
 import json
+import random
 from urllib.parse import urlparse
 from telegram_notifier import send_telegram
 INPUT_FILE = "Input.json"
