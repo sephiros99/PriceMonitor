@@ -45,7 +45,7 @@
     "name": "112J"
   },
   {
-      "url": "https://www.mule.co.kr/bbs/market/sell?page=1&map=list&mode=list&region=&start_price=&end_price=&qf=title&qs=%EA%B9%81%EC%8A%A8%20%EB%A0%88%EC%8A%A4%ED%8F%B4%2060s&category=&ct1=&ct2=&ct3=&store=&options=&soldout=&sell_status=&sido=&gugun=&dong=&period=&of=wdate&od=desc&andor=and&v=l",
+    "url": "https://www.mule.co.kr/bbs/market/sell?page=1&map=list&mode=list&region=&start_price=&end_price=&qf=title&qs=%EA%B9%81%EC%8A%A8%20%EB%A0%88%EC%8A%A4%ED%8F%B4%2060s&category=&ct1=&ct2=&ct3=&store=&options=&soldout=&sell_status=&sido=&gugun=&dong=&period=&of=wdate&od=desc&andor=and&v=l",
     "threshold": 2500000,
     "name": "깁슨 레스폴 60s"
   }
