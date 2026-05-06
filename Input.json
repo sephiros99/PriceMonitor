@@ -50,8 +50,8 @@
     "name": "깁슨 레스폴 60s"
   },
   {
-    "url": "https://www.mule.co.kr/bbs/market/sell?page=1&map=list&mode=list&region=&start_price=&end_price=&qf=title&qs=%EB%AA%A8%EB%8D%98%20%EC%84%9C%EC%9A%B8&category=&ct1=&ct2=&ct3=&store=&options=&soldout=&sell_status=&sido=&gugun=&dong=&period=&of=wdate&od=desc&andor=and&v=l",
-    "threshold": 300000,
-    "name": "모던 서울"
+    "url": "https://www.mule.co.kr/bbs/market/sell?page=1&map=list&mode=list&region=&start_price=&end_price=&qf=title&qs=%EB%B8%94%EB%9E%99%EB%B0%B1&category=&ct1=&ct2=&ct3=&store=&options=&soldout=&sell_status=&sido=&gugun=&dong=&period=&of=wdate&od=desc&andor=and&v=l",
+    "threshold": 800000,
+    "name": "블랙백"
   }
 ]
